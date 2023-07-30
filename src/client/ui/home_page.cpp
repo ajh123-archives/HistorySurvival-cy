@@ -49,7 +49,7 @@ namespace cybrion::ui
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
         ImGui::Begin("Home Title", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize);
 
-        ImGui::Image((ImTextureID)(intptr_t)m_titleTexture.getId(), ImVec2(600, 600 / 4));
+        ImGui::Image((ImTextureID)(intptr_t)m_titleTexture.getId(), ImVec2(1023, 135));
 
         ImGui::PopStyleVar(2);
         ImGui::PopStyleColor(1);

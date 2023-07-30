@@ -68,7 +68,7 @@ namespace cybrion
                                                        m_height(600),
                                                        m_mousePos(0, 0),
                                                        m_lastMousePos(0, 0),
-                                                       m_title("Cybrion v1.0"),
+                                                       m_title("History Survival"),
                                                        m_isClosed(false),
                                                        m_enableCursor(true),
                                                        m_window(nullptr),
@@ -577,11 +577,13 @@ namespace cybrion
         ImGui::Image((ImTextureID)(intptr_t)m_iconTexture.getId(), ImVec2(16, 16));
 
         ImGui::SameLine();
-        ImGui::Text("Cybrion");
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0.1f));
+        ImGui::Text(m_title.c_str());
+        ImGui::PopStyleColor(1);
 
         ImGui::EndChildFrame();
 
-        ImGui::SameLine(125);
+        ImGui::SameLine(ImGui::GetWindowWidth() - TITLE_BAR_SIZE * 7);
         ImGui::PushID(90);
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0.1f));
         ImGui::Button(std::to_string((i32)getFPS()).c_str(), ImVec2(0, TITLE_BAR_SIZE));
