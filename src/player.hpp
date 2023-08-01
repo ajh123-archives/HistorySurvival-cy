@@ -13,6 +13,7 @@ namespace cybrion
         bool isMoving = false;
         bool rightClick = false;
         bool leftClick = false;
+        bool middleClick = false;
         vec3 moveDir = { 0, 0, 0 };
         vec3 rot = { 0, 0, 0 };
         bool ctrl = false;
@@ -23,7 +24,7 @@ namespace cybrion
     class Player
     {
     public:
-        static constexpr i32 INVENTORY_SIZE = 18;
+        static constexpr i32 INVENTORY_SIZE = 36;
         static constexpr i32 DISPLAYED_INVENTORY_SIZE = 9;
 
         Player();

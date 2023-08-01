@@ -2,6 +2,8 @@
 #include "client/application.hpp"
 #include "client/ui/controls.hpp"
 #include "core/pool.hpp"
+#include "player.hpp"
+#include "world/block/blocks.hpp"
 
 namespace cybrion::ui
 {
@@ -362,6 +364,11 @@ namespace cybrion::ui
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0.2));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0, 0, 0, 0.3));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0, 0, 0.5));
+        if (ImGui::Button("Backpack"))
+        {
+            currentTab = "Backpack";
+        }
+        ImGui::SameLine();
         for (auto &[name, blocks] : m_blockMenu)
         {
             if (ImGui::Button(name.c_str()))
@@ -386,6 +393,46 @@ namespace cybrion::ui
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0, 0, 0, 1));
 
+        if ("Backpack" == currentTab)
+        {
+            i32 ncols = 9;
+            i32 nrows = std::ceil(1.0f * Player::INVENTORY_SIZE / ncols);
+
+            i32 idx = 9;
+
+            for (i32 i = 1; i < nrows; ++i)
+            {
+                for (i32 j = 0; j < ncols; ++j)
+                {
+                    ImGui::SetNextWindowBgAlpha(0.2);
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+                    ImGui::BeginChildFrame(idx + 140404, ImVec2(ITEM_FRAME_SIZE, ITEM_FRAME_SIZE), ImGuiWindowFlags_NoScrollbar);
+
+                    if (idx < Player::INVENTORY_SIZE)
+                    {
+                        vector<Block*> blocks = player.getInventory();
+                        if (BlockButton(blocks.at(idx)))
+                        {
+                            inventory[currentSlot] = blocks[idx];
+                            inventory[idx] = &Blocks::AIR;
+                            currentSlot = (currentSlot + 1) % Player::DISPLAYED_INVENTORY_SIZE;
+                        }
+
+                        if (ImGui::IsItemHovered())
+                            ImGui::SetTooltip("%s", blocks.at(idx)->getDisplayName().c_str());
+                    }
+
+                    ImGui::EndChildFrame();
+                    ImGui::SameLine();
+
+                    idx += 1;
+
+                    ImGui::PopStyleVar();
+                }
+                ImGui::NewLine();
+            }
+        }
+
         for (auto [name, blocks] : m_blockMenu)
         {
             if (name == currentTab)
@@ -408,7 +455,7 @@ namespace cybrion::ui
                             if (BlockButton(blocks[idx]))
                             {
                                 inventory[currentSlot] = blocks[idx];
-                                currentSlot = (currentSlot + 1) % Player::INVENTORY_SIZE;
+                                currentSlot = (currentSlot + 1) % Player::DISPLAYED_INVENTORY_SIZE;
                             }
 
                             if (ImGui::IsItemHovered())
@@ -433,7 +480,7 @@ namespace cybrion::ui
         ImGui::End();
 
         i32 ncols = Player::DISPLAYED_INVENTORY_SIZE;
-        i32 nrows = Player::INVENTORY_SIZE / ncols;
+        i32 nrows = Player::DISPLAYED_INVENTORY_SIZE / ncols;
 
         ImGui::SetNextWindowBgAlpha(0.3);
         ImGui::SetNextWindowPos(ImVec2(m_io.DisplaySize.x * 0.5f, m_io.DisplaySize.y - 20), ImGuiCond_Always, ImVec2(0.5f, 1));

@@ -43,7 +43,7 @@ namespace cybrion
         if (m_input.scroll)
         {
             i32 delta = m_input.scroll < 0 ? 1 : -1;
-            m_heldSlot = (((m_heldSlot + delta) % INVENTORY_SIZE) + INVENTORY_SIZE) % INVENTORY_SIZE;
+            m_heldSlot = (((m_heldSlot + delta) % DISPLAYED_INVENTORY_SIZE) + DISPLAYED_INVENTORY_SIZE) % DISPLAYED_INVENTORY_SIZE;
 
             m_input.scroll = 0;
         }
@@ -80,6 +80,16 @@ namespace cybrion
             if (m_targetBlock && m_blockInteractStopwatch.getDeltaTime() > PLAYER_BLOCK_INTERACT_DELAY)
             {
                 Game::Get().getWorld().placeBlock(m_targetPos, Blocks::AIR);
+                m_blockInteractStopwatch.reset();
+            }
+        }
+
+        if (m_input.middleClick)
+        {
+            if (m_targetBlock && m_blockInteractStopwatch.getDeltaTime() > PLAYER_BLOCK_INTERACT_DELAY)
+            {
+                Block& block = Game::Get().getWorld().getBlock(m_targetPos);
+                m_inventory[m_heldSlot] = &block;
                 m_blockInteractStopwatch.reset();
             }
         }

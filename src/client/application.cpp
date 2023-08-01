@@ -242,6 +242,9 @@ namespace cybrion
 
                             if (event.button.button == SDL_BUTTON_LEFT)
                                 input.leftClick = true;
+
+                            if (event.button.button == SDL_BUTTON_MIDDLE)
+                                input.middleClick = true;
                         }
                     }
                     if (event.type == SDL_MOUSEBUTTONUP)
@@ -253,6 +256,9 @@ namespace cybrion
 
                             if (event.button.button == SDL_BUTTON_LEFT)
                                 input.leftClick = false;
+
+                            if (event.button.button == SDL_BUTTON_MIDDLE)
+                                input.middleClick = false;
                         }
                     }
                 }
